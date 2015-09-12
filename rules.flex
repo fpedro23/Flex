@@ -22,16 +22,18 @@
 
 %{
     int num_lines = 0;
+    int comment_caller;
 %}
 
 
-//Duda: por que no acepta numeros que empiecen en cero?
 
-//TODO: handle comments
 NUMBER [1-9][0-9]*|0(c|C)[0-7]+|0(x|X)[0-9A-Fa-f]+|[+-]?[0-9]*”.”[0-9]+([eE][-+]?[0-9]+)?
 IDENTIFIER [A-Za-z_][A-Za-z0-9_]*
 
+%x comment foo
 %%
+
+
 int|float|if|then|else|while|read|write {
     printf("Reserved word: %s\n", yytext);
 }
@@ -60,6 +62,19 @@ int|float|if|then|else|while|read|write {
 }
 
 .           printf( "Unrecognized character: %s at line: %d\n", yytext, num_lines+1 );
+
+
+"/*"   				 {
+                      printf("Start of a comment\n");
+                      comment_caller = INITIAL;
+                      BEGIN(comment);
+                      }
+     
+<comment>[^*\n]*        /* eat anything that's not a '*' */
+<comment>"*"+[^*/\n]*   /* eat up '*'s not followed by '/'s */
+<comment>\n             ++num_lines;
+<comment>"*"+"/"        BEGIN(comment_caller); 
+
 
 
 
