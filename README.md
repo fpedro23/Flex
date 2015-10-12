@@ -49,6 +49,6 @@ All symbols in uppercase are tokens that you defined in the previous assignment.
 1. `$bison -d grammar.y`
 2. Compile
   * `$ gcc grammar.tab.c -o scanner -lfl //On Linux`
-  * `$ gcc grammar.tab.c -o scanner -ll -ll //On mac`
+  * `$ gcc grammar.tab.c -o scanner -ll //On mac`
 3. `$ ./scanner < test1.txt`
 4. Or simply run the following command:`$ ./run.sh`
