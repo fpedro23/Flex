@@ -33,6 +33,7 @@ IDENTIFIER [A-Za-z_][A-Za-z0-9_]*
 %x comment foo
 %%
 
+    /*Return token based on the input string*/
 
 "int"   { return INTEGER;  }
 "float" { return FLOAT;    }
@@ -81,13 +82,16 @@ IDENTIFIER [A-Za-z_][A-Za-z0-9_]*
     return ID;
 }
 
-"//" {while(input() != '\n')
+
+"//" {while(input() != '\n') //Handle single line comments
+
     ;
     num_lines++;}
 
 
 
-"/*"   				 {
+"/*"   				 { //Handle multiline Comments
+
     
                       comment_caller = INITIAL;
                       BEGIN(comment);
